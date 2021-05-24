@@ -21,7 +21,7 @@ public class PostController {
     // 글작성 페이지
     @GetMapping("/post/add")
     public String addPost(Model model) {
-        return "posts/createPost";
+        return "/posts/createPost";
     }
 
     // 글작성
@@ -44,7 +44,7 @@ public class PostController {
     @GetMapping("/post/modify")
     public String modifyPost(@RequestParam("id") Long id, Model model) {
         model.addAttribute("post", PostForm.Response.FindById.EntityToDto(postService.findById(id)));
-        return "posts/updatePost";
+        return "/posts/updatePost";
     }
 
     // 글 수정
@@ -61,14 +61,14 @@ public class PostController {
     @GetMapping("/post/read")
     public String findById(@RequestParam("id") Long id, Model model) {
         model.addAttribute("post", PostForm.Response.FindById.EntityToDto(postService.findById(id)));
-        return "posts/readPost";
+        return "/posts/readPost";
     }
 
     // 글 목록 조회
     @GetMapping("/post/list")
     public String findAll(Model model) {
         model.addAttribute("posts", PostForm.Response.FindAll.EntityListToDtoList(postService.findAll()));
-        return "posts/postList";
+        return "/posts/postList";
     }
 
     // 글 삭제
