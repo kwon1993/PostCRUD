@@ -21,7 +21,7 @@ public class MemberForm {
         public static class Add {
 
             @NotBlank(message = "이름을 입력하세요")
-            private String name;
+            private String userName;
             @NotBlank(message = "아이디를 입력하세요")
             private String loginId;
             @NotBlank(message = "비밀번호를 입력하세요")
@@ -34,7 +34,7 @@ public class MemberForm {
         public static class Modify {
 
             @NotBlank(message = "이름을 입력하세요")
-            private String name;
+            private String userName;
             @NotBlank(message = "아이디를 입력하세요")
             private String loginId;
             @NotBlank(message = "비밀번호를 입력하세요")
@@ -50,13 +50,13 @@ public class MemberForm {
         public static class FindById {
 
             private Long id;
-            private String name;
+            private String userName;
             private String loginId;
             LocalDateTime createdDate;
             LocalDateTime lastModifiedDate;
 
             public static FindById EntityToDto(Member member) {
-                return new FindById(member.getId(), member.getName(), member.getLoginId(), member.getCreatedDate(), member.getLastModifiedDate());
+                return new FindById(member.getId(), member.getUserName(), member.getLoginId(), member.getCreatedDate(), member.getLastModifiedDate());
             }
 
         }
@@ -67,7 +67,7 @@ public class MemberForm {
         public static class FindAll {
 
             private Long id;
-            private String name;
+            private String userName;
             private String loginId;
             LocalDateTime createdDate;
 
@@ -80,7 +80,7 @@ public class MemberForm {
             }
 
             private static FindAll EntityToDto(Member member) {
-                return new FindAll(member.getId(), member.getName(), member.getLoginId(), member.getCreatedDate());
+                return new FindAll(member.getId(), member.getUserName(), member.getLoginId(), member.getCreatedDate());
             }
         }
 

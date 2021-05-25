@@ -25,7 +25,7 @@ public class MemberService {
 
     @Transactional
     public Long modifyMember(Long id, MemberForm.Request.Modify modify) {
-        memberRepository.findById(id).get().modifyMember(modify.getName(), modify.getLoginId(), modify.getPassword());
+        memberRepository.findById(id).get().modifyMember(modify.getUserName(), modify.getLoginId(), modify.getPassword());
         return id;
     }
 

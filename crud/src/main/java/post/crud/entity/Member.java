@@ -18,21 +18,21 @@ public class Member extends BaseEntity {
     @GeneratedValue
     private Long id;
 
-    private String name;
+    private String userName;
     private String loginId;
     private String password;
 
     @Builder
-    public Member(String name, String loginId, String password) {
+    public Member(String userName, String loginId, String password) {
         super();
-        this.name = name;
+        this.userName = userName;
         this.loginId = loginId;
         this.password = password;
     }
 
-    public void modifyMember(String name, String loginId, String password) {
+    public void modifyMember(String userName, String loginId, String password) {
         this.modified();
-        this.name = name;
+        this.userName = userName;
         this.loginId = loginId;
         this.password = password;
     }

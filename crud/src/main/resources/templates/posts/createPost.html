@@ -20,13 +20,35 @@
                 <div>
                     <input type="text" class="form-control" id="writer" name="writer" placeholder="작성자">
                     <hr>
-                    <textarea class="form-control" id="summernote" name="content"></textarea>
+                    <textarea class="form-control" id="content" name="content"></textarea>
                     <hr>
-                    <button type="submit" class="btn btn-primary" value="쓰기" style="float: right;">쓰기</button>
+                    <a href="javascript:postAdd()" , class="btn btn-primary" style="float: right;">작성하기</a>
+                    <button type="submit" class="btn btn-primary" value="쓰기" style="float: right;">dummy</button>
                 </div>
             </div>
         </form>
     </div>
 </div>
+<script>
+    let url = "http://localhost:8080";
+    const postAdd = function () {
+        fetch(url + "/post/add", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "title": title.value,
+                "writer": writer.value,
+                "content": content.value
+            })
+        }).then(response => {
+            window.location.href = response.body;
+        }).catch(err => {
+            console.log("Fetch Error", err);
+            alert(err);
+        });
+    }
+</script>
 </body>
 </html>
