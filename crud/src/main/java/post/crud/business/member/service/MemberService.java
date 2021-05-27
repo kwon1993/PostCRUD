@@ -1,12 +1,12 @@
-package post.crud.service;
+package post.crud.business.member.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import post.crud.entity.Member;
-import post.crud.form.MemberForm;
-import post.crud.repository.MemberRepository;
+import post.crud.business.member.entity.Member;
+import post.crud.business.member.form.MemberForm;
+import post.crud.business.member.repository.MemberRepository;
 
 import java.util.List;
 

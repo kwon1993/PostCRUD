@@ -1,18 +1,17 @@
-package post.crud.controller;
+package post.crud.business.member.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import post.crud.entity.Member;
-import post.crud.form.MemberForm;
-import post.crud.service.MemberService;
+import post.crud.business.member.entity.Member;
+import post.crud.business.member.service.MemberService;
 
 import javax.validation.Valid;
+
+import static post.crud.business.member.form.MemberForm.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,15 +21,11 @@ public class MemberController {
 
     // 회원가입
     @PostMapping("/member/add")
-    public ResponseEntity<String> addMember(@Valid @RequestBody MemberForm.Request.Add add) {
+    public ResponseEntity<String> addMember(@Valid @RequestBody Request.Add add) {
         // 회원 가입
         ResponseEntity<String> entity = null;
         try {
-            Member saveMember = Member.builder()
-                    .userName(add.getUserName())
-                    .loginId(add.getLoginId())
-                    .password(add.getPassword())
-                    .build();
+            Member saveMember = Request.Add.toEntity(add);
             Long id = memberService.add(saveMember);
             entity = new ResponseEntity<String>(saveMember.toString(), HttpStatus.CREATED);
             System.out.println("try");

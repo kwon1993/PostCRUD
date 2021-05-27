@@ -1,4 +1,4 @@
-package post.crud.error;
+package post.crud.business.post.error;
 
 import lombok.Getter;
 

@@ -1,9 +1,9 @@
-package post.crud.dataPreset;
+package post.crud.business.post.init;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import post.crud.entity.Post;
+import post.crud.business.post.entity.Post;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;

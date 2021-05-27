@@ -1,9 +1,10 @@
-package post.crud.entity;
+package post.crud.business.member.entity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import post.crud.common.entity.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,14 +25,12 @@ public class Member extends BaseEntity {
 
     @Builder
     public Member(String userName, String loginId, String password) {
-        super();
         this.userName = userName;
         this.loginId = loginId;
         this.password = password;
     }
 
     public void modifyMember(String userName, String loginId, String password) {
-        this.modified();
         this.userName = userName;
         this.loginId = loginId;
         this.password = password;

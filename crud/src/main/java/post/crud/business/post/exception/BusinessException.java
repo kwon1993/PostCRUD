@@ -1,7 +1,7 @@
-package post.crud.exception;
+package post.crud.business.post.exception;
 
 import lombok.Getter;
-import post.crud.error.ErrorCode;
+import post.crud.business.post.error.ErrorCode;
 
 @Getter
 public class BusinessException extends RuntimeException{

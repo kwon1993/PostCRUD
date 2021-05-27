@@ -1,9 +1,10 @@
-package post.crud.entity;
+package post.crud.business.post.entity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import post.crud.common.entity.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +17,7 @@ import javax.persistence.Id;
 public class Post extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
@@ -25,14 +26,12 @@ public class Post extends BaseEntity {
 
     @Builder
     private Post(String title, String writer, String content) {
-        super();
         this.title = title;
         this.writer = writer;
         this.content = content;
     }
 
     public void modifyPost(String title, String writer, String content) {
-        this.modified();
         this.title = title;
         this.writer = writer;
         this.content = content;

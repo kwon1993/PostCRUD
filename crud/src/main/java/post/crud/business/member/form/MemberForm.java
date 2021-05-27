@@ -1,10 +1,10 @@
-package post.crud.form;
+package post.crud.business.member.form;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import post.crud.entity.Member;
+import post.crud.business.member.entity.Member;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -26,6 +26,14 @@ public class MemberForm {
             private String loginId;
             @NotBlank(message = "비밀번호를 입력하세요")
             private String password;
+
+            public static Member toEntity(Add add) {
+                return Member.builder()
+                        .userName(add.getUserName())
+                        .loginId(add.getLoginId())
+                        .password(add.getPassword())
+                        .build();
+            }
         }
 
         @Getter

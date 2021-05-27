@@ -1,10 +1,10 @@
-package post.crud.form;
+package post.crud.business.post.form;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import post.crud.entity.Post;
+import post.crud.business.post.entity.Post;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -26,6 +26,14 @@ public class PostForm {
             private String writer;
             @NotBlank(message = "내용을 입력하세요.")
             private String content;
+
+            public static Post toEntity(Add add) {
+                return Post.builder()
+                        .title(add.getTitle())
+                        .writer(add.getWriter())
+                        .content(add.getContent())
+                        .build();
+            }
         }
 
         @Getter
@@ -56,7 +64,7 @@ public class PostForm {
             LocalDateTime createdDate;
             LocalDateTime lastModifiedDate;
 
-            public static FindById EntityToDto(Post post) {
+            public static FindById of(Post post) {
                 return new FindById(post.getId(), post.getTitle(), post.getWriter(), post.getContent(), post.getCreatedDate(), post.getLastModifiedDate());
             }
         }
@@ -71,15 +79,15 @@ public class PostForm {
             private String writer;
             LocalDateTime createdDate;
 
-            public static List<FindAll> EntityListToDtoList(List<Post> posts) {
+            public static List<FindAll> of(List<Post> posts) {
                 List<FindAll> postList = new ArrayList<>();
                 for (Post post : posts) {
-                    postList.add(EntityToDto(post));
+                    postList.add(of(post));
                 }
                 return postList;
             }
 
-            private static FindAll EntityToDto(Post post) {
+            private static FindAll of(Post post) {
                 return new FindAll(post.getId(), post.getTitle(), post.getWriter(), post.getCreatedDate());
             }
         }

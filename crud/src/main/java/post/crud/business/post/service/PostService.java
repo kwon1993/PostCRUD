@@ -1,14 +1,15 @@
-package post.crud.service;
+package post.crud.business.post.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import post.crud.entity.Post;
-import post.crud.form.PostForm;
-import post.crud.repository.PostRepository;
+import post.crud.business.post.entity.Post;
+import post.crud.business.post.repository.PostRepository;
 
 import java.util.List;
+
+import static post.crud.business.post.form.PostForm.Request.*;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class PostService {
     }
 
     @Transactional
-    public Long modifyPost(Long id, PostForm.Request.Modify modify) {
+    public Long modifyPost(Long id, Modify modify) {
         postRepository.findById(id).get().modifyPost(modify.getTitle(), modify.getWriter(), modify.getContent());
         return id;
     }

@@ -1,12 +1,12 @@
-package post.crud.controller;
+package post.crud.common.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import post.crud.form.PostForm;
-import post.crud.service.PostService;
+import post.crud.business.post.form.PostForm;
+import post.crud.business.post.service.PostService;
 
 @Controller
 @RequiredArgsConstructor
@@ -34,21 +34,21 @@ public class HomeController {
     // 글 수정 페이지
     @GetMapping("/post/modify")
     public String modifyPost(@RequestParam("id") Long id, Model model) {
-        model.addAttribute("post", PostForm.Response.FindById.EntityToDto(postService.findById(id)));
+        model.addAttribute("post", PostForm.Response.FindById.of(postService.findById(id)));
         return "/posts/updatePost";
     }
 
     // 글 조회
     @GetMapping("/post/read")
     public String findById(@RequestParam("id") Long id, Model model) {
-        model.addAttribute("post", PostForm.Response.FindById.EntityToDto(postService.findById(id)));
+        model.addAttribute("post", PostForm.Response.FindById.of(postService.findById(id)));
         return "/posts/readPost";
     }
 
     // 글 목록 조회
     @GetMapping("/post/list")
     public String findAll(Model model) {
-        model.addAttribute("posts", PostForm.Response.FindAll.EntityListToDtoList(postService.findAll()));
+        model.addAttribute("posts", PostForm.Response.FindAll.of(postService.findAll()));
         return "/posts/postList";
     }
 }

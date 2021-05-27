@@ -32,7 +32,7 @@
 <script>
     let url = "http://localhost:8080";
     const postAdd = function () {
-        fetch(url + "/post/add", {
+        fetch(url + "/post", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -43,11 +43,11 @@
                 "content": content.value
             })
         }).then(response => {
-            window.location.href = response.body;
-        }).catch(err => {
-            console.log("Fetch Error", err);
-            alert(err);
-        });
+            response.json();
+            }
+        ).then((data) => {
+            console.log(data);
+            });
     }
 </script>
 </body>
