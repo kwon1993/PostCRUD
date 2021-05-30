@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import post.crud.business.member.entity.Member;
 import post.crud.business.member.service.MemberService;
+import post.crud.common.dto.MessageDto;
+import post.crud.common.util.ApiResponse;
 
 import javax.validation.Valid;
 
@@ -20,19 +22,11 @@ public class MemberController {
     private final MemberService memberService;
 
     // 회원가입
-    @PostMapping("/member/add")
-    public ResponseEntity<String> addMember(@Valid @RequestBody Request.Add add) {
+    @PostMapping("/member")
+    public ResponseEntity<MessageDto> addMember(@Valid @RequestBody Request.Add add) {
         // 회원 가입
-        ResponseEntity<String> entity = null;
-        try {
-            Member saveMember = Request.Add.toEntity(add);
-            Long id = memberService.add(saveMember);
-            entity = new ResponseEntity<String>(saveMember.toString(), HttpStatus.CREATED);
-            System.out.println("try");
-        } catch (Exception e) {
-            e.printStackTrace();
-            entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-        return entity;
+        Member saveMember = Request.Add.toEntity(add);
+        String responseUrl = "/";
+        return ApiResponse.set(HttpStatus.CREATED, responseUrl, "회원가입이 완료되었습니다.");
     }
 }

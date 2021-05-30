@@ -15,16 +15,14 @@
         <div class="card-header"><h4 th:text="${post.title}"></h4></div>
         <div class="card-body">
             <div>
+                <input type="hidden" id="id" name="id" th:value="${post.id}">
                 <strong th:text="${post.writer}"></strong>
                 <span th:text="${#temporals.format(post.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
                 <td th:if="${post.createdDate != post.lastModifiedDate}"><strong>수정된 시간: </strong><span th:text="${#temporals.format(post.lastModifiedDate, 'yyyy-MM-dd HH:mm:ss')}"></span></td>
             </div>
             <hr>
             <div th:utext="${post.content}"></div>
-            <form action="/post/delete" method="post" class="form">
-                <input type="hidden" name="id" th:value="${post.id}">
-                <button type="submit" class="btn btn-danger" style="float: right;">삭제</button>
-            </form>
+            <a href="javascript:postDelete()" class="btn btn-danger" style="float: right;">삭제</a>
             <form action="/post/modify" method="get" class="form">
                 <input type="hidden" name="id" th:value="${post.id}">
                 <button type="submit" class="btn btn-primary" style="float: right;">수정</button>
@@ -33,5 +31,38 @@
         </div>
     </div>
 </div>
+<script>
+    let REDIRECT_URL = "";
+    let DELETE_SUCCESS = false;
+
+    const postDelete = function () {
+        fetch("/post/" + document.getElementById('id').value, {
+            method: "DELETE"
+        }).then(response => {
+            setUrlWhenSuccess(response);
+            return response.json();
+        }).then(data => {
+            AlertAndRedirectWhenSuccess(data);
+        })
+    }
+
+    const setUrlWhenSuccess = function (response) {
+        if (response.status === 200) {
+            DELETE_SUCCESS = true;
+            REDIRECT_URL = response.headers.get('Location');
+        }
+    }
+
+    const AlertAndRedirectWhenSuccess = function (data) {
+        if (DELETE_SUCCESS === true) {
+            alert(data.message);
+            location.href = REDIRECT_URL;
+        } else if (DELETE_SUCCESS === false) {
+            alert("게시글을 찾을 수 없습니다.");
+        } else {
+            alert("비정상적인 접근입니다.");
+        }
+    }
+</script>
 </body>
 </html>

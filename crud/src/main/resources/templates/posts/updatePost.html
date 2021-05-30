@@ -12,22 +12,63 @@
 <body>
 <div class="container">
     <div class="card">
-        <form action="/post/modify" method="post" class="form">
+        <form class="form">
             <div class="card-header">
                 <input type="text" class="form-control" id="title" name="title" th:value="${post.title}" placeholder="제목을 입력하세요">
             </div>
             <div class="card-body">
                 <div>
-                    <input type="hidden" name="id" th:value="${post.id}">
+                    <input type="hidden" id="id" name="id" th:value="${post.id}">
                     <input type="text" class="form-control" id="writer" name="writer" th:value="${post.writer}" placeholder="작성자">
                     <hr>
-                    <textarea class="form-control" id="summernote" name="content">[[*{post.content}]]</textarea>
+                    <textarea class="form-control" id="content" name="content">[[*{post.content}]]</textarea>
                     <hr>
-                    <button type="submit" class="btn btn-primary" style="float: right;">수정</button>
+                    <a href="javascript:postModify()" class="btn btn-primary" style="float: right;">수정</a>
                 </div>
             </div>
         </form>
     </div>
 </div>
+<script>
+    let REDIRECT_URL = "";
+    let MODIFY_SUCCESS = false;
+
+    const postModify = function () {
+        fetch("/post/" + document.getElementById('id').value, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "title": title.value,
+                "writer": writer.value,
+                "content": content.value
+            })
+        }).then(response => {
+            setUrlWhenSuccess(response);
+            return response.json();
+        }).then(data => {
+            AlertAndRedirectWhenSuccess(data);
+        })
+    }
+
+    const setUrlWhenSuccess = function (response) {
+        if (response.status === 200) {
+            MODIFY_SUCCESS = true;
+            REDIRECT_URL = response.headers.get('Location');
+        }
+    }
+
+    const AlertAndRedirectWhenSuccess = function (data) {
+        if (MODIFY_SUCCESS === true) {
+            alert(data.message);
+            location.href = REDIRECT_URL;
+        } else if (MODIFY_SUCCESS === false) {
+            alert("모든 항목을 작성해주세요.");
+        } else {
+            alert("비정상적인 접근입니다.");
+        }
+    }
+</script>
 </body>
 </html>

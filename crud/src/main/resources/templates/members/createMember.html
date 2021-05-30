@@ -22,16 +22,17 @@
                     <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요">
                     <hr>
                     <a href="javascript:memberAdd()" class="btn btn-primary" style="float: right;">회원가입</a>
-                    <button type="submit" class="btn btn-primary" value="회원가입" style="float: right;">dummy</button>
                 </div>
             </div>
         </form>
     </div>
 </div>
 <script>
-    let url = "http://localhost:8080";
+    let REDIRECT_URL = "";
+    let SAVE_SUCCESS = false;
+
     const memberAdd = function () {
-        fetch(url + "/member/add", {
+        fetch("/member", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -42,12 +43,29 @@
                 "password": password.value
             })
         }).then(response => {
-            console.log(response);
-            alert(response);
-        }).catch(err => {
-            console.log("Fetch Error", err);
-            alert(err);
-        });
+            setUrlWhenSuccess(response);
+            return response.json();
+        }).then(data => {
+            AlertAndRedirectWhenSuccess(data);
+        })
+    }
+
+    const setUrlWhenSuccess = function (response) {
+        if (response.status === 201) {
+            SAVE_SUCCESS = true;
+            REDIRECT_URL = response.headers.get('Location');
+        }
+    }
+
+    const AlertAndRedirectWhenSuccess = function (data) {
+        if (SAVE_SUCCESS === true) {
+            alert(data.message);
+            location.href = REDIRECT_URL;
+        } else if (SAVE_SUCCESS === false) {
+            alert("모든 항목을 작성해주세요.");
+        } else {
+            alert("비정상적인 접근입니다.");
+        }
     }
 </script>
 </body>

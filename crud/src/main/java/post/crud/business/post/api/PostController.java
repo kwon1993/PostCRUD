@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import post.crud.common.dto.Message;
 import post.crud.business.post.entity.Post;
 import post.crud.business.post.service.PostService;
+import post.crud.common.dto.MessageDto;
+import post.crud.common.util.ApiResponse;
 
 import javax.validation.Valid;
 
@@ -27,41 +29,31 @@ public class PostController {
 
     // 글작성
     @PostMapping("/post")
-    public ResponseEntity<?> addPost(@Valid @RequestBody Request.Add add) {
+    public ResponseEntity<MessageDto> addPost(@Valid @RequestBody Request.Add add) {
         // 글 작성
-        Post savePost = Request.Add.toEntity(add);
-        Long id = postService.add(savePost);
-        // 작성한 글 조회
-        Post readPost = postService.findById(id);
-        String urlPath = "/post/read?id=" + readPost.getId();
-        Map map = new HashMap();
-        map.put("Location", urlPath);
-
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(urlPath);
-//        return new ResponseEntity<Message>(urlPath, headers, HttpStatus.CREATED);
-//        return new ResponseEntity<>(urlPath, HttpStatus.CREATED);
-//        model.addAttribute("post", PostForm.Response.FindById.Ent
-//        ityToDto(readPost));
-//        return "redirect:/post/read?id=" + readPost.getId();
+        Long id = postService.add(Request.Add.toEntity(add));
+        // responseUrl 가져오기
+        String responseUrl = "/post/read?id=" + postService.findById(id).getId();
+        return ApiResponse.set(HttpStatus.CREATED, responseUrl, "글 작성이 완료되었습니다.");
     }
 
     // 글 수정
     @PatchMapping("/post/{id}")
-    public String modifyPost(@PathVariable("id") Long id, @Valid Request.Modify modify, Model model) {
+    public ResponseEntity<MessageDto> modifyPost(@PathVariable(name = "id") Long id,
+                                                 @Valid @RequestBody Request.Modify modify) {
         // 글 수정
-        postService.modifyPost(id, modify);
+        Long returnId = postService.modifyPost(id, modify);
         // 수정한 글 조회
-        model.addAttribute("post", Response.FindById.of(postService.findById(id)));
-        return "redirect:/post/read?id=" + id;
+        String responseUrl = "/post/read?id=" + returnId;
+        return ApiResponse.set(HttpStatus.OK, responseUrl, "글 수정이 완료되었습니다.");
     }
 
     // 글 삭제
     @DeleteMapping("/post/{id}")
-    public String deletePost(@PathVariable("id") Long id) {
+    public ResponseEntity<MessageDto> deletePost(@PathVariable(name = "id") Long id) {
+        // 글 삭제
         postService.delete(id);
-        return "redirect:/post/list";
+        String responseUrl = "/post/list";
+        return ApiResponse.set(HttpStatus.OK, responseUrl, "글 삭제가 완료되었습니다.");
     }
 }
